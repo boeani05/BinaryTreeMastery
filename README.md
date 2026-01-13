@@ -1,50 +1,67 @@
 # BinaryTree Mastery
 
-A console-based Java application designed to help you understand and interact with the fundamental concepts of binary trees. This project allows users to build a custom binary tree by adding nodes and then perform common tree traversals.
+A robust and interactive console-based Java application designed to deepen your understanding and practical skills with fundamental binary tree concepts. This project allows users to build and manipulate a custom binary tree, performing common operations with a focus on code quality and user experience.
 
 ## Features
 
--   **Interactive Console Menu:** Easy-to-use text-based interface for all operations.
--   **Dynamic Node Addition:**
-    -   Add a new root node if the tree is empty.
-    -   Add new nodes as left or right children to any existing node in the tree.
-    -   Includes validation to ensure parent nodes exist and child slots are not already occupied.
--   **Pre-Order Traversal:** Displays tree nodes in the order: Root -> Left Subtree -> Right Subtree.
--   **In-Order Traversal:** Displays tree nodes in the order: Left Subtree -> Root -> Right Subtree.
--   **Robust Input Handling:** Catches `InputMismatchException` for non-integer inputs.
+-   **Interactive Console Menu:** User-friendly text-based interface for all tree operations.
+-   **Robust Input Handling:** Custom `readInt` utility ensures valid integer input, preventing runtime errors.
+-   **Dynamic Node Addition (`Add node`):**
+    -   Initialize the tree with a root node.
+    -   Add new nodes as left or right children to any existing parent node (identified by its value).
+    -   Comprehensive validation: Checks if the parent node exists, if the chosen child slot is available, and prevents adding nodes with duplicate values.
+    -   Utilizes a type-safe `Side` enum for clearer child placement.
+-   **Tree Traversals:**
+    -   **Pre-Order Traversal:** Displays nodes in the order: Root -> Left Subtree -> Right Subtree.
+    -   **In-Order Traversal:** Displays nodes in the order: Left Subtree -> Root -> Right Subtree.
+    -   **Post-Order Traversal:** Displays nodes in the order: Left Subtree -> Right Subtree -> Root.
+-   **Tree Properties:**
+    -   **Get Height of Tree:** Calculates the height (longest path from root to leaf) of the tree.
+    -   **Count of Nodes:** Determines the total number of nodes in the tree.
+    -   **List Leaf Nodes:** Identifies and lists all nodes that have no children, ordered from left to right.
+-   **Enhanced Node Definition:** `Node` values are `final`, `parent` references are managed, and `IllegalArgumentException` is thrown for invalid child assignments.
+-   **Modular Design:** Logic is well-separated into `Node`, `Tree`, `Side`, and `App` classes, promoting maintainability and readability.
 
 ## How to Run
 
-1.  **Save the files:** Ensure `App.java` is in a directory named `treeApp/`, and `Node.java`, `Tree.java` are in a directory named `tree/`. Both `treeApp` and `tree` should be in the same parent directory.
-2.  **Compile:** Open your terminal or command prompt, navigate to the parent directory of `treeApp` and `tree`, and compile the Java files:
+1.  **Project Setup:**
+    -   Create a main project directory.
+    -   Inside, create two subdirectories: `tree` and `treeApp`.
+    -   Place `Node.java`, `Tree.java`, `Side.java` into the `tree` directory.
+    -   Place `App.java` into the `treeApp` directory.
+2.  **Compile:** Open your terminal/command prompt, navigate to your main project directory, and compile the Java files:
     ```bash
-    javac treeApp/App.java tree/Node.java tree/Tree.java
+    javac -d out tree/Node.java tree/Side.java tree/Tree.java treeApp/App.java
     ```
 3.  **Execute:** Run the application:
     ```bash
-    java treeApp.App
+    java -cp treeApp.App
     ```
 
 ## Project Structure
 
--   `tree/Node.java`: Defines the basic building block (node) of the binary tree.
--   `tree/Tree.java`: Manages the overall tree structure and implements tree-specific algorithms (traversals, node search).
--   `treeApp/App.java`: Contains the main application logic, user interface, and integration of tree operations.
+-   `tree/Node.java`: Defines the fundamental building block (node) with its value, children, and parent.
+-   `tree/Tree.java`: Manages the overall tree structure and implements all core tree algorithms (traversals, search, properties, node addition logic).
+-   `tree/Side.java`: An enum for specifying LEFT or RIGHT child placement, improving type safety and readability.
+-   `treeApp/App.java`: Contains the main application entry point, user interface, input handling, and orchestrates tree operations.
 
 ## Current Progress
 
--   ✅ Node structure defined (`Node.java`).
--   ✅ Tree structure defined (`Tree.java`).
--   ✅ Node addition functionality (with validation) implemented in `App.java`.
--   ✅ Pre-Order Traversal implemented in `Tree.java` and accessible from `App.java`.
--   ✅ In-Order Traversal implemented in `Tree.java` and accessible from `App.java`.
--   ☑️ Node search (`findNode`) implemented in `Tree.java` (used internally for adding nodes).
+-   ✅ Node structure defined (`Node.java`) with enhanced robustness.
+-   ✅ `Side` enum implemented for type-safe child assignment.
+-   ✅ Tree structure defined (`Tree.java`) with proper root and child management.
+-   ✅ Robust node addition functionality (`addChild`) encapsulated in `Tree.java`.
+-   ✅ Pre-Order, In-Order, and Post-Order Traversals implemented.
+-   ✅ Height calculation (`getHeight`) implemented.
+-   ✅ Node counting (`countNodes`) implemented.
+-   ✅ Leaf node listing (`listLeafNodes`) implemented.
+-   ✅ Interactive console menu (`App.java`) with robust input handling and clear user feedback.
 
-## Future Enhancements (Coming Soon!)
+## Next Steps (Future Enhancements)
 
--   Implement **Post-Order Traversal**.
--   Calculate and display the **height of the tree**.
--   Count and display the **total number of nodes** in the tree.
--   Identify and display all **leaf nodes**.
--   Add functionality for **node deletion**.
--   (Potentially explore iterative versions of traversals using a stack.)
+-   Transform into a **Binary Search Tree (BST)**:
+    -   Modify `addChild` logic to follow BST rules (smaller values left, larger values right).
+    -   Optimize `findNode` for BST performance.
+-   Implement **Node Deletion** for BSTs (a challenging but rewarding task!).
+-   Explore other tree types like **Heaps** or **Balanced Search Trees (e.g., AVL Trees)**.
+-   Add graphical visualization (e.g., using libraries like JavaFX or Swing for a basic GUI).
