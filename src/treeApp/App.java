@@ -1,18 +1,16 @@
 package treeApp;
 
-import tree.Node;
+import tree.Side;
 import tree.Tree;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Tree tree = null;
+        Tree tree = new Tree();
 
         boolean doesMenuLoop = true;
-        int menuChoice;
 
         while (doesMenuLoop) {
             System.out.println("""
@@ -22,124 +20,122 @@ public class App {
                     1. Add node
                     2. Traverse Pre-Order
                     3. Traverse In-Order
-                    4. Coming Soon
-                    5. Coming Soon
-                    6. Coming Soon
-                    7. Coming Soon
+                    4. Traverse Post-Order
+                    5. Get Height of Tree
+                    6. Count of Nodes
+                    7. List Leaf Nodes
                     8. Exit
                     """);
 
-            while (true) {
-                try {
-                    menuChoice = scanner.nextInt();
-                    break;
-                } catch (InputMismatchException e) {
-                    System.err.println("\nError while reading input: " + e.getMessage());
-                } finally {
-                    scanner.nextLine();
-                }
-            }
+            int menuChoice = readInt(scanner, "Choose an option: ");
 
             switch (menuChoice) {
-                case 1:
-                    int newNodeVal;
-                    int leftOrRightChild;
-                    int parentNodeVal;
-                    Node newNode;
-                    Node parentNode;
+                case 1 -> addNodeFlow(scanner, tree);
 
-                    System.out.println("\n=== Enter an Integer value for the new Node ===");
-
-                    while (true) {
-                        try {
-                            newNodeVal = scanner.nextInt();
-                            break;
-                        } catch (InputMismatchException e) {
-                            System.err.println("\nError while reading input: " + e.getMessage());
-                        } finally {
-                            scanner.nextLine();
-                        }
-                    }
-
-                    newNode = new Node(newNodeVal);
-
-                    if (tree == null || tree.root() == null) {
-                        tree = new Tree(newNode);
-
-                        System.out.println("\nNode " + newNodeVal + " set as new root.");
-                    } else {
-                        System.out.println("\n--- Enter the value of the parent's node ---");
-
-                        while (true) {
-                            try {
-                                parentNodeVal = scanner.nextInt();
-                                break;
-                            } catch (InputMismatchException e) {
-                                System.err.println("\nError while reading input: " + e.getMessage());
-                            } finally {
-                                scanner.nextLine();
-                            }
-                        }
-
-                        parentNode = tree.findNode(parentNodeVal);
-
-                        System.out.println("\nAdd node " + newNodeVal + " to the left(1) or to the right(2)? ---");
-
-                        while (true) {
-                            try {
-                                leftOrRightChild = scanner.nextInt();
-                                break;
-                            } catch (InputMismatchException e) {
-                                System.err.println("\nError while reading input: " + e.getMessage());
-                            } finally {
-                                scanner.nextLine();
-                            }
-                        }
-
-                        if (parentNode != null) {
-                            if (leftOrRightChild == 1) {
-                                if (parentNode.getLeftChild() == null) {
-                                    parentNode.setLeftChild(newNode);
-                                    System.out.println("\nSuccessfully added left child.");
-                                } else {
-                                    System.out.println("\nLeft Child is already occupied!");
-                                }
-                            } else if (leftOrRightChild == 2) {
-                                if (parentNode.getRightChild() == null) {
-                                    parentNode.setRightChild(newNode);
-                                    System.out.println("\nSuccessfully added right child.");
-                                } else {
-                                    System.out.println("\nRight Child is already occupied!");
-                                }
-                            } else {
-                                System.err.println("\nInvalid input. Try again!");
-                            }
-                        } else {
-                            System.err.println("\nParent node can't be found...");
-                        }
-                    }
-                    break;
-
-                case 2:
-                    if (tree == null) {
+                case 2 -> {
+                    if (tree.getRoot() == null) {
                         System.out.println("\nThere aren't any nodes yet.");
-                        return;
+                        break;
                     }
-
-                    System.out.println("\n=== Traversing Pre-Order ===");
-
+                    System.out.println("\n===Traversing Pre-Order ===");
                     tree.traversePreOrder();
-                    break;
-                case 3:
-                    if (tree == null) {
+                }
+
+                case 3 -> {
+                    if (tree.getRoot() == null) {
                         System.out.println("\nThere aren't any nodes yet.");
-                        return;
+                        break;
                     }
-
-                    System.out.println("\nTraversing In-Order");
-
+                    System.out.println("\n=== Traversing In-Order ===");
                     tree.traverseInOrder();
-                    break;
+                }
+
+                case 4 -> {
+                    if (tree.getRoot() == null) {
+                        System.out.println("\nThere aren't any nodes yet.");
+                        break;
+                    }
+                    System.out.println("\n=== Traversing Post-Order ===");
+                    tree.traversePostOrder();
+                }
+
+                case 5 -> {
+                    if (tree.getRoot() == null) {
+                        System.out.println("\nThere aren't any nodes yet.");
+                        break;
+                    }
+                    System.out.println("\n=== Height of Tree ===");
+                    System.out.println(tree.getHeight());
+                }
+
+                case 6 -> {
+                    if (tree.getRoot() == null) {
+                        System.out.println("\nThere aren't any nodes yet.");
+                        break;
+                    }
+                    System.out.println("\n=== Count of all nodes ===");
+                    System.out.println(tree.countNodes());
+                }
+
+                case 7 -> {
+                    if (tree.getRoot() == null) {
+                        System.out.println("\nThere aren't any nodes yet.");
+                        break;
+                    }
+                    System.out.println("\n=== Leaf Nodes ===");
+                    tree.listLeafNodes();
+                }
+
+                case 8 -> doesMenuLoop = false;
+
+                default -> System.err.println("\nNot a valid input.");
+            }
+        }
+    }
+
+    private static void addNodeFlow(Scanner scanner, Tree tree) {
+        int newNodeVal = readInt(scanner, "\nEnter an Integer value for the new Node: ");
+
+        if (tree.getRoot() == null) {
+            tree.setRoot(newNodeVal);
+            System.out.println("\nNode " + newNodeVal + " set as new root.");
+            return;
+        }
+
+        int parentNodeVal = readInt(scanner, "\nEnter the value of the parent's node: ");
+        int sideChoice = readInt(scanner, "\nAdd node to the left(1) or to the right(2)?: ");
+
+        Side side;
+        if (sideChoice == 1) {
+            side = Side.LEFT;
+        } else if (sideChoice == 2) {
+            side = Side.RIGHT;
+        } else {
+            System.err.println("\nInvalid input. Try again!");
+            return;
+        }
+
+        boolean success = tree.addChild(parentNodeVal, newNodeVal, side);
+
+        if (success) {
+            System.out.println("\nSuccessfully added " + side + " child.");
+        } else {
+            System.err.println("\nFailed to add node. Possible reasons:");
+            System.err.println("- Parent node not found");
+            System.err.println("- Chosen side is already occupied");
+            System.err.println("- Value already exists in the tree");
+        }
+    }
+
+    private static int readInt(Scanner scanner, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String line = scanner.nextLine().trim();
+
+            try {
+                return Integer.parseInt(line);
+            } catch (NumberFormatException e) {
+                System.err.println("Enter a valid Integer!");
             }
         }
     }
