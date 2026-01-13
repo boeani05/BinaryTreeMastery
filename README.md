@@ -29,13 +29,13 @@ A robust and interactive console-based Java application designed to deepen your 
     -   Inside, create two subdirectories: `tree` and `treeApp`.
     -   Place `Node.java`, `Tree.java`, `Side.java` into the `tree` directory.
     -   Place `App.java` into the `treeApp` directory.
-2.  **Compile:** Open your terminal/command prompt, navigate to your main project directory, and compile the Java files:
+2.  **Compile:** Open your terminal/command prompt, navigate to your main project directory (BinaryTreeMastery/src), and compile the Java files:
     ```bash
     javac -d out tree/Node.java tree/Side.java tree/Tree.java treeApp/App.java
     ```
 3.  **Execute:** Run the application:
     ```bash
-    java -cp treeApp.App
+    java -cp out treeApp.App
     ```
 
 ## Project Structure
