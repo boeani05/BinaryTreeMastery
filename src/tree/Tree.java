@@ -1,37 +1,47 @@
 package tree;
 
-public record Tree(Node root) {
+public class Tree {
 
-    public void traversePreOrder() {
-        traversePreOrderRecursive(root);
+    private Node root;
+
+    public Tree() {
+        this.root = null;
     }
 
-    public void traverseInOrder() {
-        traverseInOrderRecursive(root);
+    public Node getRoot() {
+        return this.root;
     }
 
-    private void traverseInOrderRecursive(Node node) {
-        if (node == null) {
-            return;
+    public boolean setRoot(int value) {
+        if (root != null) {
+            return false;
+        }
+        root = new Node(value);
+        return true;
+    }
+
+    public boolean addChild(int parentValue, int childValue, Side side) {
+        if (root == null) {
+            return false;
         }
 
-        traverseInOrderRecursive(node.getLeftChild());
-
-        System.out.print(node.getValue() + " ");
-
-        traverseInOrderRecursive(node.getRightChild());
-    }
-
-    private void traversePreOrderRecursive(Node node) {
-        if (node == null) {
-            return;
+        Node parent = findNode(parentValue);
+        if (parent == null) {
+            return false;
         }
 
-        System.out.print(node.getValue() + " ");
+        if (findNode(childValue) != null) return false;
 
-        traversePreOrderRecursive(node.getLeftChild());
+        Node child = new Node(childValue);
 
-        traversePreOrderRecursive(node.getRightChild());
+        if (side == Side.LEFT) {
+            if (parent.getLeftChild() != null) return false;
+            parent.setLeftChild(child);
+        } else {
+            if (parent.getRightChild() != null) return false;
+            parent.setRightChild(child);
+        }
+        return true;
     }
 
     public Node findNode(int value) {
@@ -47,12 +57,97 @@ public record Tree(Node root) {
             return current;
         }
 
-        Node foundInLeft = findNodeRecursive(current.getLeftChild(), valueToFind);
+        Node foundLeft = findNodeRecursive(current.getLeftChild(), valueToFind);
 
-        if (foundInLeft != null) {
-            return foundInLeft;
+        if (foundLeft != null) {
+            return foundLeft;
         }
 
         return findNodeRecursive(current.getRightChild(), valueToFind);
+    }
+
+    public void traversePreOrder() {
+        traversePreOrderRecursive(root);
+        System.out.println();
+    }
+
+    public void traverseInOrder() {
+        traverseInOrderRecursive(root);
+        System.out.println();
+    }
+
+    public void traversePostOrder() {
+        traversePostOrderRecursive(root);
+        System.out.println();
+    }
+
+    private void traversePreOrderRecursive(Node node) {
+        if (node == null) return;
+
+        System.out.print(node.getValue() + " ");
+
+        traversePreOrderRecursive(node.getLeftChild());
+
+        traversePreOrderRecursive(node.getRightChild());
+    }
+
+    private void traverseInOrderRecursive(Node node) {
+        if (node == null) return;
+
+        traverseInOrderRecursive(node.getLeftChild());
+
+        System.out.print(node.getValue() + " ");
+
+        traverseInOrderRecursive(node.getRightChild());
+    }
+
+    private void traversePostOrderRecursive(Node node) {
+        if (node == null) return;
+
+        traversePostOrderRecursive(node.getLeftChild());
+
+        traversePostOrderRecursive(node.getRightChild());
+
+        System.out.print(node.getValue() + " ");
+    }
+
+    public int getHeight() {
+        return getHeightRecursive(root);
+    }
+
+    private int getHeightRecursive(Node node) {
+        if (node == null) return -1;
+
+        int leftHeight = getHeightRecursive(node.getLeftChild());
+        int rightHeight = getHeightRecursive(node.getRightChild());
+
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+
+    public int countNodes() {
+        return countNodesRecursive(root);
+    }
+
+    private int countNodesRecursive(Node node) {
+        if (node == null) return 0;
+
+        return 1 + countNodesRecursive(node.getLeftChild())
+                + countNodesRecursive(node.getRightChild());
+    }
+
+    public void listLeafNodes() {
+        listLeafNodesRecursive(root);
+        System.out.println();
+    }
+
+    private void listLeafNodesRecursive(Node node) {
+        if (node == null) return;
+
+        if (node.getLeftChild() == null && node.getRightChild() == null) {
+            System.out.print(node.getValue() + " ");
+            return;
+        }
+        listLeafNodesRecursive(node.getLeftChild());
+        listLeafNodesRecursive(node.getRightChild());
     }
 }
